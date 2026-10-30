@@ -1,0 +1,59 @@
+.resource-cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.rc {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+}
+
+.rc-icon {
+  width: 14px; height: 14px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.rc-icon svg { width: 14px; height: 14px; }
+
+.rc-body { flex: 1; min-width: 0; }
+
+.rc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.rc-label {
+  font-size: 9px; font-weight: 600;
+  color: var(--t3); text-transform: uppercase; letter-spacing: 0.07em;
+}
+
+.rc-val {
+  font-size: 13px; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace; line-height: 1;
+}
+
+.rc-unit { font-size: 9px; font-weight: 400; }
+
+.rc-track {
+  height: 3px; background: var(--bg3);
+  border-radius: 2px; overflow: hidden;
+}
+
+.rc-fill {
+  height: 100%; border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.rc-sub {
+  font-size: 8px; font-family: 'JetBrains Mono', monospace;
+  color: var(--t3); margin-top: 2px;
+}

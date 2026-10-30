@@ -1,0 +1,25 @@
+# Environment
+sentinel-backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+venv/
+.venv/
+
+# Node
+node_modules/
+sentinel-dashboard/dist/
+
+# Model weights (download separately, see README)
+sentinel-backend/models/
+
+# Runtime data: face crops, embeddings, FAISS index, enrolment records
+sentinel-backend/data/
+*.sqlite3
+
+# Editor
+.vscode/
+.idea/

@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg0: #0d1017;
+  --bg1: #13171f;
+  --bg2: #1a1f2b;
+  --bg3: #222736;
+  --border: #252c3d;
+  --border2: #303a52;
+  --t1: #eef0f6;
+  --t2: #7c87a0;
+  --t3: #434e65;
+  --blue: #2563eb;
+  --blue-dim: #1d4ed8;
+  --blue-bg: rgba(37,99,235,0.13);
+  --green: #16a34a;
+  --green-bg: rgba(22,163,74,0.13);
+  --red: #dc2626;
+  --red-bg: rgba(220,38,38,0.13);
+  --amber: #d97706;
+  --amber-bg: rgba(217,119,6,0.13);
+  /* Categorical series slots, assigned in fixed order and never cycled.
+     Validated as a set: worst adjacent pair 12.5 (OKLab x100) under
+     protanopia, 13.6 under tritanopia, 24.3 with normal vision, all clearing
+     3:1 against both the light and dark chart surfaces. The palette's own
+     green and red cannot join this set -- red against amber lands at 14.4 for
+     normal vision, below the legible floor, and green against red at 5.0
+     under deuteranopia. */
+  --series-1: #2563eb;
+  --series-2: #d97706;
+  --series-3: #0d9488;
+  --series-4: #7c3aed;
+
+  /* Sequential ramp for magnitude (heatmap density). Single hue, monotone
+     lightness. Dark mode gets its own steps rather than a flipped copy: on a
+     dark surface the ramp has to ascend in lightness to stay visible against
+     it. Light-mode steps are redefined below. */
+  --heat-1: #1e40af;
+  --heat-2: #2563eb;
+  --heat-3: #3b82f6;
+  --heat-4: #93c5fd;
+
+  --sb-w: 56px;
+  --topbar-h: 48px;
+  --radius: 8px;
+  --radius-lg: 10px;
+  --text-primary: var(--t1);
+  --text-secondary: var(--t2);
+  --text-tertiary: var(--t3);
+  --bg-primary: var(--bg1);
+  --bg-secondary: var(--bg2);
+  --bg-tertiary: var(--bg3);
+  --border-mid: var(--border2);
+  --accent: var(--blue);
+  --accent-dim: var(--blue-dim);
+  --accent-glow: var(--blue-bg);
+  --danger: var(--red);
+  --warn: var(--amber);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius-lg);
+}
+
+[data-theme="light"] {
+  --bg0: #eef0f5;
+  --bg1: #ffffff;
+  --bg2: #f5f6fa;
+  --bg3: #eaedf4;
+  --border: #dde1ec;
+  --border2: #c9cedd;
+  --t1: #0d1017;
+  --t2: #4b5568;
+  --t3: #9ca3b8;
+
+  /* Light surface needs the ramp to descend in lightness instead. */
+  --heat-1: #60a5fa;
+  --heat-2: #3b82f6;
+  --heat-3: #2563eb;
+  --heat-4: #1e3a8a;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg0);
+  color: var(--t1);
+  transition: background 0.2s, color 0.2s;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.shell {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg0);
+}
+
+.main {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 10px;
+  gap: 10px;
+}
+
+.panel {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-head {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--t1);
+  flex: 1;
+}
+
+.placeholder-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.placeholder-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.placeholder-tag {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--blue);
+}
+
+.placeholder-sub {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t3);
+}
+
+.app-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(180deg, #0a0f16 0%, #111827 100%);
+}
+
+.app-loading-card {
+  width: min(360px, 100%);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.88);
+}
+
+.app-loading-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.app-loading-sub {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.live-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) auto minmax(340px, 420px);
+  gap: 6px;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.live-body.side-collapsed {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.live-side {
+  display: grid;
+  grid-template-rows: minmax(360px, 1.15fr) minmax(220px, 0.85fr);
+  gap: 10px;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.live-side .panel {
+  min-height: 0;
+}
+
+@media (max-width: 1400px) {
+  .live-body {
+    grid-template-columns: minmax(0, 1fr) auto minmax(320px, 360px);
+  }
+}
+
+@media (max-width: 1180px) {
+  .live-body {
+    grid-template-columns: 1fr;
+  }
+
+  .live-side {
+    grid-template-rows: minmax(320px, 1fr) minmax(220px, auto);
+  }
+
+  .live-body.side-collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .live-body .ch-horizontal {
+    display: none;
+  }
+}

@@ -1,0 +1,48 @@
+.metrics-row {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mc {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+}
+
+.mc-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mc-right {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.mc-val {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1;
+}
+
+.mc-label {
+  font-size: 10px;
+  color: var(--t3);
+  font-weight: 500;
+}

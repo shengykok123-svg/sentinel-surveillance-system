@@ -1,0 +1,260 @@
+.cam-panel {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0;
+}
+
+.cam-total-badge {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 600; color: var(--green);
+  background: var(--green-bg); padding: 2px 8px; border-radius: 4px;
+}
+
+.cam-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: 1fr;
+  gap: 8px; padding: 10px; flex: 1; min-height: 0; min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .cam-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cam-cell {
+  border-radius: 10px; overflow: hidden; position: relative;
+  background: #06080d; border: 1px solid var(--border);
+  cursor: pointer; transition: border-color 0.15s;
+  display: flex; flex-direction: column;
+  min-height: 0;
+}
+
+.cam-cell:hover { border-color: var(--blue); }
+
+.cam-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #06080d;
+  overflow: hidden;
+}
+
+.cam-canvas, .cam-video {
+  width: 100%; height: 100%; display: block;
+  object-fit: contain; min-height: 0; background: #06080d;
+}
+
+.cam-video-hidden, .cam-canvas.cam-video-hidden { display: none; }
+
+.cam-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; background: rgba(6, 8, 13, 0.78); padding: 16px;
+  pointer-events: none;
+}
+
+.cam-expand-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(148,163,184,0.22);
+  border-radius: 999px;
+  background: rgba(6, 8, 13, 0.82);
+  color: rgba(255,255,255,0.92);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  backdrop-filter: blur(10px);
+}
+
+.cam-expand-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37,99,235,0.55);
+  background: rgba(15, 23, 42, 0.92);
+}
+
+.cam-expand-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cam-fullscreen-meta {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 4;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cam-fullscreen-name {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(6, 8, 13, 0.82);
+  color: rgba(255,255,255,0.94);
+  border: 1px solid rgba(148,163,184,0.22);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.cam-fullscreen-badge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.82);
+  color: rgba(255,255,255,0.78);
+  border: 1px solid rgba(148,163,184,0.18);
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cam-overlay-offline {
+  background: rgba(6, 8, 13, 0.9);
+  pointer-events: auto;
+}
+
+.cam-spinner {
+  width: 24px; height: 24px;
+  border: 2px solid rgba(37,99,235,0.2);
+  border-top-color: #2563eb;
+  border-radius: 50%; animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.cam-overlay-text {
+  font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cam-overlay-sub {
+  font-size: 9px; color: rgba(255,255,255,0.3);
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center; word-break: break-all;
+}
+
+.cam-offline-icon { width: 32px; height: 32px; color: rgba(220,38,38,0.6); }
+.cam-offline-icon svg { width: 100%; height: 100%; }
+
+.cam-retry-btn {
+  margin-top: 4px; font-size: 10px; font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  background: rgba(37,99,235,0.15); color: #2563eb;
+  border: 1px solid rgba(37,99,235,0.3);
+  padding: 4px 12px; border-radius: 6px; cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cam-retry-btn:hover { background: rgba(37,99,235,0.25); }
+
+/* Face count — top left */
+/* FPS — top right */
+/* Bottom bar */
+.cam-bar {
+  height: 30px; background: rgba(6,8,13,0.92);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 10px; gap: 8px; flex-shrink: 0;
+}
+
+.cam-rec {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #dc2626; animation: blink 0.8s infinite; flex-shrink: 0;
+}
+
+.cam-rec-offline { background: rgba(255,255,255,0.2); animation: none; }
+
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+.cam-name {
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,255,255,0.85); flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.cam-meta-badge {
+  font-size: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.cam-status-badge {
+  font-size: 8px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; padding: 1px 6px; border-radius: 4px; flex-shrink: 0;
+}
+
+.cam-status-live { color: #16a34a; background: rgba(22,163,74,0.15); }
+.cam-status-wait { color: #d97706; background: rgba(217,119,6,0.15); }
+.cam-status-off  { color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+
+.cam-canvas {
+  width: 100%;
+  flex: 1;
+  display: block;
+  min-height: 0;
+  background: #06080d;
+}
+
+.cam-canvas-hidden { display: none; }
+
+.cam-canvas {
+  width: 100%;
+  flex: 1;
+  display: block;
+  min-height: 0;
+  background: #06080d;
+}
+
+.cam-cell:fullscreen,
+.cam-cell.is-fullscreen {
+  background: #000;
+  border: none;
+  border-radius: 0;
+}
+
+.cam-cell:fullscreen .cam-viewport,
+.cam-cell.is-fullscreen .cam-viewport {
+  flex: 1;
+  background: #000;
+}
+
+.cam-cell:fullscreen .cam-video,
+.cam-cell.is-fullscreen .cam-video {
+  object-fit: contain;
+  background: #000;
+}
+
+.cam-cell:fullscreen .cam-bar,
+.cam-cell.is-fullscreen .cam-bar {
+  display: none;
+}
+
+.cam-cell:fullscreen .cam-fullscreen-meta,
+.cam-cell.is-fullscreen .cam-fullscreen-meta {
+  display: flex;
+}
+
+.cam-cell:fullscreen .cam-expand-btn,
+.cam-cell.is-fullscreen .cam-expand-btn {
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  background: rgba(6, 8, 13, 0.76);
+}

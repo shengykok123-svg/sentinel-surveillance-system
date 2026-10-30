@@ -1,0 +1,68 @@
+.topbar {
+  position: relative;
+  z-index: 20;
+  height: var(--topbar-h);
+  flex-shrink: 0;
+  background: var(--bg1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+}
+
+.tb-title {
+  font-size: 13px; font-weight: 600; color: var(--t1); flex: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.tb-clock {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--t2); flex-shrink: 0;
+}
+
+.tb-pill {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace; flex-shrink: 0;
+}
+
+.tb-live {
+  background: var(--green-bg); color: var(--green);
+  border: 1px solid rgba(22,163,74,0.3);
+}
+
+.tb-alert {
+  background: var(--red-bg); color: var(--red);
+  border: 1px solid rgba(220,38,38,0.3);
+}
+
+.tb-user {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--t1);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tb-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; animation: blink 1s infinite;
+}
+
+.icon-btn {
+  width: 30px; height: 30px; border-radius: var(--radius);
+  background: var(--bg2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--t2);
+  transition: background 0.15s, color 0.15s; flex-shrink: 0;
+}
+
+.icon-btn:hover { background: var(--bg3); color: var(--t1); }
+.icon-btn svg { width: 14px; height: 14px; }
+
+.logout-btn {
+  color: var(--red);
+}

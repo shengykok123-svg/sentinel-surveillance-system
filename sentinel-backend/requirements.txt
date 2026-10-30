@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# Install in TWO steps:
+#
+#     pip install -r requirements.txt
+#     pip install --no-deps -r requirements-nodeps.txt
+#
+# Running only the first command leaves the app working but roughly 5x slower,
+# with no error and no traceback. See requirements-nodeps.txt for the reason.
+# ---------------------------------------------------------------------------
+
+# --- Web / API layer ---
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9
+python-jose[cryptography]>=3.3.0
+passlib>=1.7.4
+httpx>=0.27.0
+
+# --- Inference runtimes ---
+# onnxruntime-gpu is pinned on purpose. It must match the CUDA/cuDNN runtime
+# that the installed torch wheel ships; 1.21.0 is verified against
+# torch 2.6.0+cu124 on an RTX 4060. If you bump it, bump torch in the same
+# change and confirm afterwards that CUDA is still available:
+#     python -c "import onnxruntime as ort; print(ort.get_available_providers())"
+# NEVER let plain `onnxruntime` into this environment -- see requirements-nodeps.txt.
+onnxruntime-gpu==1.21.0
+onnx>=1.16.0
+torch>=2.5.0
+faiss-cpu>=1.8.0
+
+# --- Vision / numerics ---
+# headless is deliberate: this runs as a service and the GUI build pulls in Qt.
+# numpy/scipy/scikit-image are listed explicitly because the packages in
+# requirements-nodeps.txt are installed with --no-deps and so can no longer
+# contribute them transitively.
+opencv-python-headless>=4.9.0
+numpy>=1.24
+scipy>=1.10
+scikit-image>=0.22
+
+# --- Persistence ---
+sqlalchemy>=2.0.30
+psycopg[binary]>=3.1.19
+
+# --- Runtime utilities ---
+python-dotenv>=1.0.1
+psutil>=5.9.0
+pynvml>=11.5.0
+tqdm>=4.65
+requests>=2.31
+
+# --- Tests ---
+pytest>=8.3.0

@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# Install these WITHOUT their dependencies, after requirements.txt:
+#
+#     pip install --no-deps -r requirements-nodeps.txt
+#
+# Both packages declare dependencies that silently REPLACE packages pinned in
+# requirements.txt. pip reports success, the app still starts, and nothing
+# raises -- it just gets much slower.
+#
+#     insightface         -> onnxruntime    (CPU-only build)
+#     insightface         -> opencv-python  (GUI build)
+#     deep-sort-realtime  -> opencv-python  (GUI build)
+#
+# The onnxruntime one is the expensive mistake, and it has bitten this project
+# before. `onnxruntime` and `onnxruntime-gpu` install into the SAME
+# site-packages/onnxruntime/ directory, so whichever is installed last
+# overwrites onnxruntime_pybind11_state.pyd -- the file that decides which
+# execution providers exist. The CUDA provider DLLs are left on disk but become
+# orphaned, CUDAExecutionProvider disappears from get_available_providers(), and
+# every ONNX model falls back to the CPU.
+#
+# Measured cost on an RTX 4060 laptop: SCRFD detection went from 7 ms to 81 ms
+# per frame and the delivered MJPEG stream dropped from 29 fps to 6 fps. The
+# only symptom is a single line in the startup log:
+#
+#     Detection ONNX provider ready: CPUExecutionProvider     <-- wrong
+#     Detection ONNX provider ready: CUDAExecutionProvider    <-- correct
+#
+# opencv-python is the same class of problem: it and opencv-python-headless
+# both own site-packages/cv2/, so installing it defeats the headless pin.
+#
+# --no-deps is safe here because every real dependency of these two packages
+# (numpy, scipy, onnx, opencv-python-headless, tqdm, requests, scikit-image) is
+# listed explicitly in requirements.txt.
+#
+# Verify after installing -- CUDAExecutionProvider must appear:
+#     python -c "import onnxruntime as ort; print(ort.get_available_providers())"
+#
+# EXPECTED: `pip check` will report three unmet requirements:
+#
+#     deep-sort-realtime requires opencv-python, which is not installed.
+#     insightface requires onnxruntime, which is not installed.
+#     insightface requires opencv-python, which is not installed.
+#
+# This is correct and must be left alone. onnxruntime-gpu provides the same
+# `onnxruntime` module, and opencv-python-headless provides the same `cv2`
+# module; pip just cannot express "a different distribution satisfies this".
+# Installing the named packages to silence pip check is exactly the mistake
+# this file exists to prevent.
+# ---------------------------------------------------------------------------
+
+insightface>=0.7.3
+deep-sort-realtime>=1.3.2

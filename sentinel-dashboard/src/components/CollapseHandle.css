@@ -1,0 +1,102 @@
+.ch-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ch-vertical {
+  height: 14px;
+  width: 100%;
+  margin: -4px 0;
+  gap: 12px;
+}
+
+.ch-vertical.is-collapsed {
+  height: 18px;
+  margin: -2px 0;
+}
+
+.ch-horizontal {
+  flex-direction: column;
+  width: 14px;
+  height: 100%;
+  margin: 0 -3px;
+  gap: 12px;
+}
+
+.ch-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ch-horizontal .ch-summary {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ch-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg1);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ch-chip-label { color: var(--t3); font-weight: 600; }
+.ch-chip-value { color: var(--t1); font-weight: 700; }
+
+/* Side rail chips read top-to-bottom so they fit the 14px column. */
+.ch-horizontal .ch-chip {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  padding: 6px 2px;
+}
+
+.ch-btn {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg1);
+  color: var(--t2);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.ch-vertical .ch-btn { width: 44px; height: 14px; }
+.ch-horizontal .ch-btn { width: 14px; height: 44px; }
+
+.ch-btn:hover,
+.ch-btn:focus-visible {
+  border-color: var(--blue);
+  background: var(--blue-bg);
+  color: var(--blue);
+  outline: none;
+}
+
+.ch-icon {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.15s ease;
+}
+
+.ch-down  { transform: rotate(0deg); }
+.ch-up    { transform: rotate(180deg); }
+.ch-right { transform: rotate(-90deg); }
+.ch-left  { transform: rotate(90deg); }

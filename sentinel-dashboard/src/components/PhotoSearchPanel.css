@@ -1,0 +1,279 @@
+/* Search by photograph, on the POI Profiles page. Card, field and button
+   styles come from FaceSearch.css; only the panel's own layout lives here. */
+
+.poi-photo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)), var(--bg1);
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.18);
+}
+
+.poi-photo-copy {
+  margin: 6px 0 0;
+  max-width: 76ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--t2);
+}
+
+.poi-photo-body {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.poi-photo-drop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  overflow: hidden;
+  border: 1px dashed var(--border2);
+  border-radius: 14px;
+  background: var(--bg2);
+  cursor: pointer;
+}
+
+.poi-photo-drop.dragging,
+.poi-photo-drop:focus-visible {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-bg);
+  outline: none;
+}
+
+.poi-photo-drop .poi-file-input {
+  display: none;
+}
+
+.poi-photo-placeholder {
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--t3);
+}
+
+.poi-photo-preview {
+  width: 100%;
+  height: 100%;
+  max-height: 220px;
+  object-fit: contain;
+}
+
+.poi-photo-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  min-width: 0;
+}
+
+.poi-photo-controls .poi-filter-field {
+  max-width: 180px;
+}
+
+.poi-photo-file {
+  overflow: hidden;
+  font-size: 12px;
+  color: var(--t2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poi-photo-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.poi-photo-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.poi-photo-empty {
+  font-size: 13px;
+  color: var(--t2);
+}
+
+.poi-photo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.poi-photo-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) minmax(170px, 230px) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg2);
+}
+
+.poi-photo-row.above {
+  border-color: rgba(22, 163, 74, 0.35);
+}
+
+.poi-photo-rank {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--t3);
+}
+
+.poi-photo-who {
+  min-width: 0;
+}
+
+.poi-photo-who .poi-card-name {
+  font-size: 15px;
+}
+
+.poi-photo-seen {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--t2);
+}
+
+.poi-photo-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.poi-photo-sim {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.poi-photo-bar {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg3);
+}
+
+.poi-photo-bar span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 3px;
+  background: var(--blue);
+}
+
+.poi-photo-row.above .poi-photo-bar span {
+  background: var(--green);
+}
+
+/* Solid blue, so the one action on a result row stands out in both themes;
+   sized like the page's other action buttons. */
+.poi-photo-show {
+  min-height: 42px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.poi-photo-show:hover {
+  background: var(--blue-dim);
+  transform: translateY(-1px);
+}
+
+.poi-photo-show:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--blue-bg);
+}
+
+/* the acceptance threshold, marked on the similarity scale */
+.poi-photo-bar i {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--t2);
+}
+
+/* Photograph search on the left, the registry's text search and filters on
+   the right, in one card; the photograph results span both below. */
+.poi-find-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.poi-find-photo,
+.poi-find-registry {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.poi-find-registry {
+  padding-left: 24px;
+  border-left: 1px solid var(--border);
+}
+
+.poi-find-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(140px, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+@media (max-width: 1100px) {
+  .poi-find-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .poi-find-registry {
+    padding-top: 16px;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
+    border-left: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .poi-photo-body {
+    grid-template-columns: 1fr;
+  }
+
+  .poi-find-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .poi-photo-row {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .poi-photo-score,
+  .poi-photo-row > .poi-photo-show {
+    grid-column: 2;
+  }
+}

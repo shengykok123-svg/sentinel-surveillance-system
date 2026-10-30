@@ -1,0 +1,786 @@
+.an-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 12px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.an-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.an-title { font-size: 16px; font-weight: 700; color: var(--t1); }
+
+.an-subtitle {
+  margin-top: 3px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t3);
+}
+
+/* One filter row above everything it scopes. */
+.an-ranges {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.an-range {
+  padding: 5px 11px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--t2);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+
+.an-range:hover { color: var(--t1); }
+.an-range.active { background: var(--bg3); color: var(--t1); }
+
+.an-body { display: flex; flex-direction: column; gap: 12px; }
+
+/* Refetch holds the previous render at reduced opacity: no skeleton flash and
+   no layout jump while a new range loads. */
+.an-body.stale { opacity: 0.55; transition: opacity 0.15s; }
+
+.an-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  .an-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.an-note {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--t2);
+  line-height: 1.5;
+}
+
+.an-note strong {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t1);
+}
+
+.an-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.an-empty-title { font-size: 14px; font-weight: 600; color: var(--t1); }
+.an-empty-sub { font-size: 11px; color: var(--t2); max-width: 420px; text-align: center; }
+
+.an-retry {
+  margin-top: 6px;
+  padding: 5px 14px;
+  font: inherit;
+  font-size: 11px;
+  color: var(--t1);
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+/* ── KPI row ─────────────────────────────────────────────────────── */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.8fr) minmax(0, 3fr);
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .kpi-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+.kpi-hero,
+.kpi-tile {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+}
+
+.kpi-hero { display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+
+.kpi-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--t3);
+}
+
+/* Hero figure: the same sans as everything else, and proportional figures --
+   tabular digits make a large standalone number look loose. */
+.kpi-hero-value {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--t1);
+  letter-spacing: -0.02em;
+}
+
+.kpi-hero-sub { font-size: 11px; color: var(--t2); }
+
+.kpi-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 620px) {
+  .kpi-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.kpi-tile { display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+
+.kpi-value {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--t1);
+  line-height: 1.1;
+}
+
+.kpi-delta { font-size: 10px; font-weight: 500; }
+.kpi-delta.good { color: var(--green); }
+.kpi-delta.bad { color: var(--red); }
+.kpi-delta.neutral { color: var(--t3); }
+
+/* ── Shared plot chrome ──────────────────────────────────────────── */
+
+.hist-main,
+.fsz-main { display: flex; gap: 8px; }
+
+.hist-yaxis,
+.fsz-yaxis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 190px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.hist-ytick,
+.fsz-ytick {
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--t3);
+  line-height: 1;
+  transform: translateY(-3px);
+}
+
+.hist-plot,
+.fsz-plot {
+  position: relative;
+  flex: 1;
+  height: 190px;
+  min-width: 0;
+}
+
+.hist-grid,
+.fsz-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Hairline, solid, one step off the surface: chrome must stay recessive. */
+.hist-gridline,
+.fsz-gridline { height: 1px; background: var(--border); }
+
+.hist-bars,
+.fsz-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hist-slot,
+.fsz-slot {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: default;
+  /* The hit target is the whole column, not just the painted bar. */
+  padding: 0 1px;
+}
+
+.hist-slot:focus-visible,
+.fsz-slot:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+
+.hist-stack,
+.fsz-stack {
+  width: 100%;
+  max-width: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* 2px of surface separates stacked segments -- the gap does the work a
+     border would otherwise do with data-weight ink. */
+  gap: 2px;
+}
+
+.hist-seg,
+.fsz-seg { width: 100%; min-height: 2px; transition: filter 0.12s; }
+
+/* 4px rounded data-end, square where it meets the baseline. */
+.hist-seg-top,
+.fsz-seg-top { border-radius: 4px 4px 0 0; }
+
+.hist-slot:hover .hist-seg,
+.hist-slot:focus-visible .hist-seg,
+.fsz-slot:hover .fsz-seg,
+.fsz-slot:focus-visible .fsz-seg { filter: brightness(1.22); }
+
+/* ── Similarity histogram ────────────────────────────────────────── */
+
+.hist { display: flex; flex-direction: column; }
+
+.hist-threshold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dashed var(--t2);
+  pointer-events: none;
+}
+
+.hist-threshold.simulated { border-left-color: var(--blue); }
+
+.hist-threshold-tag {
+  position: absolute;
+  top: -2px;
+  left: 3px;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t2);
+  background: var(--bg1);
+  padding: 0 3px;
+  white-space: nowrap;
+}
+
+.hist-threshold.simulated .hist-threshold-tag { color: var(--blue); }
+
+.hist-xaxis {
+  position: relative;
+  height: 16px;
+  margin-left: 38px;
+  margin-top: 4px;
+}
+
+.hist-xtick {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--t3);
+}
+
+.hist-slider {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.hist-slider-label { font-size: 10px; color: var(--t3); flex-shrink: 0; }
+
+.hist-slider input[type='range'] { flex: 1; min-width: 0; accent-color: var(--blue); }
+
+.hist-slider-value {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--t1);
+  width: 30px;
+}
+
+.hist-slider-reset {
+  font: inherit;
+  font-size: 10px;
+  color: var(--t2);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.hist-slider-reset:hover { color: var(--t1); border-color: var(--border2); }
+
+/* ── Face size chart ─────────────────────────────────────────────── */
+
+.fsz { display: flex; flex-direction: column; }
+
+.fsz-rate {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--t2);
+  pointer-events: none;
+}
+
+/* A column tall enough to crowd the top of the plot carries its label inside
+   the cap, where white clears the fill's contrast. */
+.fsz-rate.inside { color: #fff; }
+
+.fsz-xaxis {
+  display: flex;
+  margin-left: 38px;
+  margin-top: 4px;
+}
+
+.fsz-xtick {
+  flex: 1;
+  text-align: center;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t3);
+  min-width: 0;
+}
+
+/* ── Camera table ────────────────────────────────────────────────── */
+
+.cam-table-wrap { overflow-x: auto; }
+
+.cam-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+
+.cam-table th,
+.cam-table td {
+  padding: 7px 12px 7px 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  color: var(--t1);
+}
+
+.cam-table thead th {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--t3);
+  white-space: nowrap;
+}
+
+.cam-table .num {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cam-table tbody tr.idle { color: var(--t3); }
+.cam-table tbody tr.idle td,
+.cam-table tbody tr.idle .cam-name { color: var(--t3); }
+
+.cam-name { display: block; font-weight: 500; }
+.cam-location { display: block; font-size: 10px; color: var(--t3); }
+
+.cam-volume {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 130px;
+}
+
+.cam-volume-bar {
+  height: 6px;
+  border-radius: 0 3px 3px 0;
+  background: var(--blue);
+  flex-shrink: 0;
+  max-width: 100px;
+}
+
+.cam-volume-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+}
+
+/* ── Activity timeline ───────────────────────────────────────────── */
+
+.tl { display: flex; flex-direction: column; }
+
+.tl-main { display: flex; gap: 8px; }
+
+.tl-yaxis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 160px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.tl-ytick {
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--t3);
+  line-height: 1;
+  transform: translateY(-3px);
+}
+
+.tl-plot { position: relative; flex: 1; height: 160px; min-width: 0; }
+
+.tl-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tl-gridline { height: 1px; background: var(--border); }
+
+.tl-bars { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+
+.tl-slot {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 1px;
+}
+
+.tl-slot:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+
+.tl-stack {
+  width: 100%;
+  max-width: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+.tl-seg { width: 100%; min-height: 2px; transition: filter 0.12s; }
+.tl-seg-top { border-radius: 4px 4px 0 0; }
+
+.tl-slot:hover .tl-seg,
+.tl-slot:focus-visible .tl-seg { filter: brightness(1.22); }
+
+/* Watchlist hits are a subset of the recognised events, so they ride above the
+   column as a marker instead of joining the stack and being counted twice. */
+.tl-alert {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+  /* 2px surface ring keeps the marker legible where columns crowd together. */
+  box-shadow: 0 0 0 2px var(--bg1);
+  pointer-events: none;
+}
+
+.tl-xaxis { display: flex; margin-left: 38px; margin-top: 4px; }
+
+.tl-xtick {
+  flex: 1;
+  text-align: center;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t3);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* ── Heatmap ─────────────────────────────────────────────────────── */
+
+.hm { display: flex; flex-direction: column; gap: 6px; }
+
+.hm-grid-wrap { display: flex; gap: 6px; }
+
+.hm-rowlabels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 26px;
+  flex-shrink: 0;
+}
+
+.hm-rowlabel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: 9px;
+  color: var(--t3);
+}
+
+.hm-grid { position: relative; flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.hm-row { display: flex; gap: 2px; height: 20px; }
+
+.hm-cell {
+  flex: 1;
+  min-width: 0;
+  border-radius: 2px;
+  /* An empty cell keeps the surface behind it, so "nothing happened" never
+     reads as the lowest band of the ramp. */
+  background: var(--bg2);
+  transition: filter 0.12s;
+}
+
+.hm-cell:hover,
+.hm-cell:focus-visible { filter: brightness(1.3); outline: none; }
+.hm-cell:focus-visible { box-shadow: 0 0 0 2px var(--blue); }
+
+.hm-xaxis { display: flex; gap: 2px; margin-left: 32px; }
+
+.hm-xtick {
+  flex: 1;
+  text-align: left;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t3);
+  min-width: 0;
+}
+
+.hm-scale {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.hm-scale-label { font-size: 10px; color: var(--t3); }
+
+.hm-scale-step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t2);
+}
+
+.hm-swatch { width: 9px; height: 9px; border-radius: 2px; }
+.hm-swatch.empty { background: var(--bg2); }
+
+/* ── People leaderboard ──────────────────────────────────────────── */
+
+.pl { display: flex; flex-direction: column; gap: 14px; }
+
+.pl-list { list-style: none; display: flex; flex-direction: column; }
+
+.pl-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 1.4fr) minmax(60px, 2fr) 46px 56px minmax(80px, 1fr) minmax(110px, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+
+@media (max-width: 860px) {
+  .pl-row { grid-template-columns: minmax(120px, 1.4fr) minmax(50px, 1.6fr) 46px 56px; }
+  .pl-cameras, .pl-seen { display: none; }
+}
+
+.pl-person {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  min-width: 0;
+  text-align: left;
+}
+
+.pl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.pl-name {
+  color: var(--t1);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pl-person:hover .pl-name { text-decoration: underline; }
+
+.pl-type {
+  font-size: 9px;
+  color: var(--t3);
+  background: var(--bg2);
+  border-radius: 3px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+
+.pl-bar-track { height: 8px; min-width: 0; }
+
+.pl-bar { height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
+
+.pl-events,
+.pl-sim {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--t1);
+}
+
+.pl-sim { color: var(--t2); }
+
+.pl-cameras,
+.pl-seen {
+  color: var(--t3);
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pl-seen { font-family: 'JetBrains Mono', monospace; text-align: right; }
+
+.pl-mix { display: flex; flex-direction: column; gap: 7px; }
+
+.pl-mix-head { display: flex; align-items: baseline; justify-content: space-between; }
+.pl-mix-title { font-size: 10px; color: var(--t3); }
+.pl-mix-total {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t3);
+}
+
+.pl-mix-bar {
+  position: relative;
+  display: flex;
+  height: 12px;
+  border-radius: 4px;
+  overflow: visible;
+  /* 2px of surface between segments, matching every other stack on the page. */
+  gap: 2px;
+}
+
+.pl-mix-seg { min-width: 3px; transition: filter 0.12s; }
+.pl-mix-seg:first-child { border-radius: 4px 0 0 4px; }
+.pl-mix-seg:last-child { border-radius: 0 4px 4px 0; }
+.pl-mix-seg:only-child { border-radius: 4px; }
+.pl-mix-seg:hover,
+.pl-mix-seg:focus-visible { filter: brightness(1.25); outline: none; }
+
+.pl-mix-legend { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; }
+
+.pl-mix-key {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--t2);
+}
+
+.pl-mix-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--t1);
+}
+
+/* ── Compliance panel ────────────────────────────────────────────── */
+
+.cmp {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(220px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .cmp { grid-template-columns: minmax(0, 1fr); }
+}
+
+.cmp-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(126px, 1fr)); gap: 8px; }
+
+.cmp-stat {
+  background: var(--bg2);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+}
+
+.cmp-stat-label { font-size: 10px; color: var(--t3); margin-bottom: 2px; }
+
+.cmp-stat-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--t1);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cmp-stat-value.warn { color: var(--amber); }
+
+.cmp-due { display: flex; flex-direction: column; gap: 5px; }
+.cmp-due-title { font-size: 10px; color: var(--t3); }
+.cmp-due-list { list-style: none; display: flex; flex-direction: column; }
+
+.cmp-due-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+
+.cmp-due-name { color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.cmp-due-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--t2);
+  flex-shrink: 0;
+}
